@@ -12,7 +12,7 @@ guided by information from https://github.com/tmk/tmk_keyboard/wiki/IBM-PC-XT-Ke
 int keyboard_clk = 25;
 int keyboard_data = 26; //Note: Keeping these both ints because like I dont want to fuckaround and find out
 
-uint16_t output_character_code = 0; /* The data is sent supposedly in 8 bits plus 2 start bits on the front.
+uint8_t output_character_code = 0; /* The data is sent supposedly in 8 bits plus 2 start bits on the front.
                                       So on interrupt we should read in data and feed the last integer of data out into the serial port.
 */
 
@@ -25,7 +25,6 @@ int data_bit_number = 0; // Which bit of data are we reading. Only goes up to 10
 void IRAM_ATTR clock_falling_edge(){
   // output_character_code = (output_character_code >> 1) + (digitalRead(keyboard_data) << 8); //FREAKY mode - MSB is first telling if it is being pushed or released
 
-
   output_character_code = (output_character_code << 1) + digitalRead(keyboard_data); /* NORMAL mode - MSB is last telling if it is being pushed or released
                                                                                                       Leftmost bit is always 1 for some reason (might be the start(1) bit)*/
 
@@ -35,7 +34,6 @@ void IRAM_ATTR clock_falling_edge(){
 
 
 void setup() {
-
   // initialize serial communication at 115200 bits per second:
   //supposedly instructions happen once every 2.5 uS = 400 000 times a second
 
@@ -47,7 +45,6 @@ void setup() {
   attachInterrupt(keyboard_clk, clock_falling_edge, FALLING);
 
   pinMode(keyboard_data, INPUT);
-
 }
 
 
@@ -56,8 +53,16 @@ void loop() {
 
   if (data_bit_number >= 10){
     // Serial.println("bit number = " + data_bit_number);
-    Serial.println(output_character_code, BIN);
+
+    // Serial.println(output_character_code & 0b011111111, BIN);
+    
+    // uint8_t biting_my_character = output_character_code;
+    // Serial.println(biting_my_character, BIN);
+
+    Serial.println(output_character_code, BIN); //Type 3 - if output_character_code is uint8_t then it just cuts off the start bits because of how this shit works. CANT USE FREAKY MODE.
+    
     data_bit_number = 0;
     output_character_code = 0;
   }
+
 }
