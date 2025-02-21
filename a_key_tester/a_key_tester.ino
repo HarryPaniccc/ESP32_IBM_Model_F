@@ -17,6 +17,13 @@ uint16_t output_character_code = 0; /* The data is sent supposedly in 8 bits plu
 //tells us how far through the keystroke code we are so we can reset our count and output something.
 int data_bit_number = 0;
 
+uint8_t key_codes[8] = {1111000, 11111000, 100, 10000100, 1000100};
+
+
+char keys[8] = {'a', 's', 'd', 'f', 'g'};
+
+
+
 void IRAM_ATTR clock_falling_edge(){
   // output_character_code = (output_character_code >> 1) + (digitalRead(keyboard_data) << 8); //FREAKY mode - MSB is first telling if it is being pushed or released
 
@@ -25,6 +32,22 @@ void IRAM_ATTR clock_falling_edge(){
 
   data_bit_number++; //increment the bit by 1. If it reaches 10, we need to reset it.
 }
+
+
+
+void IRAM_ATTR check_code(uint8_t binary_keycode){
+  //checks the keycode and outputs the key to the serial line
+  int i = 0;
+
+  while (true){
+    if (binary_keycode == key_codes[i]){
+      Serial.println(keys[i]);
+      break;
+    }
+    i++;
+  }
+}
+
 
 
 void setup() {
@@ -41,10 +64,8 @@ void setup() {
 
 void loop() {
   if (data_bit_number >= 10){
-    
-
-    Serial.println(output_character_code, BIN); //Type 3 - if output_character_code is uint8_t then it just cuts off the start bits because of how this shit works. CANT USE FREAKY MODE.
-    
+    check_code(output_character_code);
+    // Serial.println(output_character_code, BIN); //Type 3 - if output_character_code is uint8_t then it just cuts off the start bits because of how this shit works. CANT USE FREAKY MODE.
     data_bit_number = 0;
     output_character_code = 0;
   }

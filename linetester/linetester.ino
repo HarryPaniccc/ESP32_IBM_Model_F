@@ -59,6 +59,8 @@ void loop() {
     // uint8_t biting_my_character = output_character_code;
     // Serial.println(biting_my_character, BIN);
 
+
+    //TODO: I think this is broken?, no not broken, just needed to restart the code
     Serial.println(output_character_code, BIN); //Type 3 - if output_character_code is uint8_t then it just cuts off the start bits because of how this shit works. CANT USE FREAKY MODE.
     
     data_bit_number = 0;
