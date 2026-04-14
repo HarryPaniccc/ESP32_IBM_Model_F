@@ -14,8 +14,6 @@ Why does the random data output occur?
 NOTE: where the "0 INS" key should be (where . Del is now) is a dead key. Scroll Lock is also the broken
 */
 
-
-
 // Setting the GPIO pin numbers for the clk and data lines. For my purposes GPIO12 is clk and GPIO13 is da.
 int keyboard_clk = 25;   // Sets the keyboard clock pin to pin number 25
 int keyboard_data = 26;  // Sets the keyboard datas pin to pin number 26
@@ -119,7 +117,7 @@ char code2key(code){
       case 0b1000110110: output = KEY_EQUALS_RELEASE; break;
       case 0b0000111010: output = KEY_BACKSPACE_PRESS; break;
       case 0b1000111010: output = KEY_BACKSPACE_RELEASE; break;
-      
+
       // numpad
       case 0b0101001110: output = KEY_KP_0_PRESS; break;
       case 0b1101001110: output = KEY_KP_0_RELEASE; break;
