@@ -4,6 +4,7 @@ Date: 19/02/2025
 
 this code reads in the data line of a IBM Model F keyboard on the falling edge of its clock, but is also kinda a playground to mess with things
 guided by information from https://github.com/tmk/tmk_keyboard/wiki/IBM-PC-XT-Keyboard-Protocol#8088-irq1interrupt-09h
+Kinda defunct code.
 
 */
 
